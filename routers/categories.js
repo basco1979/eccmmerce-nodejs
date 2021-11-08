@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose');   
 const { Category } = require('../models/category')
 
 router.get('/', async (req, res) => {
@@ -30,6 +31,9 @@ router.post('/', async (req, res) => {
 })
 
 router.put('/:id', async(req, res)=>{
+    if(!mongoose.isValidObjectId(req.params.id)){
+        res.status(400).send('Invalid Category Id')
+    }
     const category = await Category.findByIdAndUpdate(
         req.params.id,
         {
